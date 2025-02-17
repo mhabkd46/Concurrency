@@ -1,9 +1,14 @@
 package Confluent;
 
+import java.util.*;
+
 public class Main {
     public static void main(String[] args) {
-        searchPhraseTestCases();
+//        searchPhraseTestCases();
+//        singleWildCardMatchingTestCases();
+        functionLibraryTests();
     }
+
 
     public static void searchPhraseTestCases() {
         SearchPhrase searchPhrase = new SearchPhrase();
@@ -37,5 +42,35 @@ public class Main {
         System.out.print("cloud clout-- ");
         searchPhrase.search("cloud clout").forEach(x -> System.out.print(x + ", "));
         System.out.println();
+    }
+    public static void singleWildCardMatchingTestCases() {
+        SingleWildCardMatching singleWildCardMatching = new SingleWildCardMatching();
+
+        System.out.println("cat , c*t - " + singleWildCardMatching.isMatch("cat", "c*t"));
+        System.out.println("cat , c* - " + singleWildCardMatching.isMatch("cat", "c*"));
+        System.out.println("cat , *t - " + singleWildCardMatching.isMatch("cat", "*t"));
+        System.out.println("dog , c*t - " + singleWildCardMatching.isMatch("dog", "c*t"));
+        System.out.println("cat , tac* - " + singleWildCardMatching.isMatch("cat", "tac*"));
+    }
+    public static void functionLibraryTests() {
+        FunctionLibary functionLibary = new FunctionLibary();
+
+        HashSet<Function> functions = new HashSet<>();
+        functions.add(new Function("FuncA", Arrays.asList("String", "Integer", "Integer"), false));
+        functions.add(new Function("FuncB", Arrays.asList("String", "Integer"), true));
+        functions.add(new Function("FuncC", Arrays.asList("Integer"), true));
+        functions.add(new Function("FuncD", Arrays.asList("Integer", "Integer"), true));
+        functions.add(new Function("FuncE", Arrays.asList("Integer", "Integer", "Integer"), false));
+        functions.add(new Function("FuncF", Arrays.asList("String"), false));
+        functions.add(new Function("FuncG", Arrays.asList("Integer"), false));
+
+        functionLibary.register(functions);
+
+        System.out.println(functionLibary.findMatches(Arrays.asList("String")));
+        System.out.println(functionLibary.findMatches(Arrays.asList("Integer")));
+        System.out.println(functionLibary.findMatches(Arrays.asList("Integer", "Integer", "Integer", "Integer")));
+        System.out.println(functionLibary.findMatches(Arrays.asList("Integer", "Integer", "Integer")));
+        System.out.println(functionLibary.findMatches(Arrays.asList("String", "Integer", "Integer", "Integer")));
+        System.out.println(functionLibary.findMatches(Arrays.asList("String", "Integer", "Integer")));
     }
 }
