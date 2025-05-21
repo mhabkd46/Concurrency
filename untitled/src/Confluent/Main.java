@@ -4,9 +4,16 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-//        searchPhraseTestCases();
+       searchPhraseTestCases();
 //        singleWildCardMatchingTestCases();
-        functionLibraryTests();
+        // functionLibraryTests();
+        // tailTestCase();
+    }
+
+    public static void tailTestCase() {
+        Tail tail = new Tail();
+        String answer = tail.getLastNLines(1);
+        System.out.println("Answer - "  + answer);
     }
 
 

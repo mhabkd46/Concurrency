@@ -3,29 +3,22 @@ import java.util.*;
 
 public class SearchPhrase {
     HashMap<String, HashMap<Integer, HashSet<Integer>>> wordToDocumentIDToIndexes;
-    HashSet<Integer> allDocIds;
 
     public SearchPhrase() {
         this.wordToDocumentIDToIndexes = new HashMap<>();
-        this.allDocIds = new HashSet<>();
     }
 //    Cloud computing is the on-demand availability of computer system resources.
     public void addDocument(int docId, String text) {
-        allDocIds.add(docId);
         text = sanitize(text);
         String[] textStrings = text.split(" ");
 
         for (int i = 0; i < textStrings.length; i++) {
             String word = textStrings[i];
-            if (!wordToDocumentIDToIndexes.containsKey(word)) {
-                wordToDocumentIDToIndexes.put(word, new HashMap<>());
-            }
+            wordToDocumentIDToIndexes.putIfAbsent(word, new HashMap<>());
+
             HashMap<Integer, HashSet<Integer>> documentIDToIndexes = wordToDocumentIDToIndexes.get(word);
 
-            if (!documentIDToIndexes.containsKey(docId)) {
-                documentIDToIndexes.put(docId, new HashSet<>());
-            }
-
+            documentIDToIndexes.putIfAbsent(docId, new HashSet<>());
             HashSet<Integer> indexes = documentIDToIndexes.get(docId);
             indexes.add(i);
         }
@@ -33,45 +26,33 @@ public class SearchPhrase {
     }
 
     public List<Integer> search(String phrase) {
-        HashSet<Integer> docIds = null;
 
         phrase = sanitize(phrase);
 
-        String[] textStrings = phrase.split(" ");
+        String[] words = phrase.split(" ");
 
-        for (int i = 1; i < textStrings.length; i++) {
-            String currentWord = textStrings[i];
-            String prevWord = textStrings[i - 1];
+        HashMap<Integer, HashSet<Integer>> prevWordDocumentIdToIndexes = wordToDocumentIDToIndexes.get(words[0]);
 
-            if (!wordToDocumentIDToIndexes.containsKey(currentWord)) {
-                return new ArrayList<>();
-            }
-            if (!wordToDocumentIDToIndexes.containsKey(prevWord)) {
-                return new ArrayList<>();
-            }
+        if (prevWordDocumentIdToIndexes == null) return new ArrayList<>();
 
-            HashMap<Integer, HashSet<Integer>> prevWordDocumentIDToIndexes = wordToDocumentIDToIndexes.get(prevWord);
-            HashMap<Integer, HashSet<Integer>> currentWordDocumentIDToIndexes = wordToDocumentIDToIndexes.get(currentWord);
+        HashSet<Integer> result = new HashSet<>(prevWordDocumentIdToIndexes.keySet());
 
-            HashSet<Integer> commonDocIds = this.getCommonDocIdsWithIndexMatching(prevWordDocumentIDToIndexes, currentWordDocumentIDToIndexes);
-            if (docIds == null) {
-                docIds = commonDocIds;
-            }
-            docIds.retainAll(commonDocIds);
+        for (int i = 1; i < words.length; i++) {
+            HashMap<Integer, HashSet<Integer>> currentWordDocumentIdToIndexes = wordToDocumentIDToIndexes.get(words[i]);
+
+            if (currentWordDocumentIdToIndexes == null) return new ArrayList<>();
+
+            HashSet<Integer> commonDocIds = getCommonDocIdsWithIndexMatching(prevWordDocumentIdToIndexes, currentWordDocumentIdToIndexes);
+            result.retainAll(commonDocIds);
+
+            prevWordDocumentIdToIndexes = currentWordDocumentIdToIndexes;
         }
 
-        if (docIds == null) return new ArrayList<>();
-
-        List<Integer> result = new ArrayList<>(docIds);
-
-        return result;
+        return new ArrayList<>(result);
     }
 
     private String sanitize(String phrase) {
-        phrase = phrase.replace(".", "");
-        phrase = phrase.replace(",", "");
-
-        return phrase.toLowerCase();
+        return phrase.replace(".", "").replace(",", "").toLowerCase();
     }
 
     private HashSet<Integer> getCommonDocIdsWithIndexMatching(HashMap<Integer, HashSet<Integer>> prevWordDocumentIDToIndexes, HashMap<Integer, HashSet<Integer>> currentWordDocumentIDToIndexes) {
