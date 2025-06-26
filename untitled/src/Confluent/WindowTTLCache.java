@@ -21,7 +21,7 @@ public class WindowTTLCache {
     Node head;
     Node tail;
     Map<Integer, Node> map;
-    int runningSum;
+    float runningSum;
 
     public WindowTTLCache(int capacity) {
         this.capacity = capacity;

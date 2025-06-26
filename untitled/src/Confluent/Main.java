@@ -6,9 +6,12 @@ public class Main {
     public static void main(String[] args) {
     //    searchPhraseTestCases();
 //        singleWildCardMatchingTestCases();
-        functionLibraryTests();
+//        functionLibraryTests();
         // tailTestCase();
+//        solveSudokuTests();
+        quickSortTests();
     }
+
 
     public static void tailTestCase() {
         Tail tail = new Tail();
@@ -79,5 +82,59 @@ public class Main {
         System.out.println(functionLibary.findMatches(Arrays.asList("Integer", "Integer", "Integer")));
         System.out.println(functionLibary.findMatches(Arrays.asList("String", "Integer", "Integer", "Integer")));
         System.out.println(functionLibary.findMatches(Arrays.asList("String", "Integer", "Integer")));
+    }
+    public static void validSudokuTests() {
+        String[][] input1 = {{"5","3",".",".","7",".",".",".","."}
+                ,{"6",".",".","1","9","5",".",".","."}
+                ,{".","9","8",".",".",".",".","6","."}
+                ,{"8",".",".",".","6",".",".",".","3"}
+                ,{"4",".",".","8",".","3",".",".","1"}
+                ,{"7",".",".",".","2",".",".",".","6"}
+                ,{".","6",".",".",".",".","2","8","."}
+                ,{".",".",".","4","1","9",".",".","5"}
+                ,{".",".",".",".","8",".",".","7","9"}};
+        Sudoku sudoku1 = new Sudoku(input1);
+        System.out.println(sudoku1.validSudoku());
+
+        String[][] input2 = {{"8","3",".",".","7",".",".",".","."}
+                ,{"6",".",".","1","9","5",".",".","."}
+                ,{".","9","8",".",".",".",".","6","."}
+                ,{"8",".",".",".","6",".",".",".","3"}
+                ,{"4",".",".","8",".","3",".",".","1"}
+                ,{"7",".",".",".","2",".",".",".","6"}
+                ,{".","6",".",".",".",".","2","8","."}
+                ,{".",".",".","4","1","9",".",".","5"}
+                ,{".",".",".",".","8",".",".","7","9"}};
+        Sudoku sudoku2 = new Sudoku(input2);
+        System.out.println(sudoku2.validSudoku());
+
+        String[][] input3 = {{"8","3",".",".","7",".",".",".","."},{"6",".",".","1","9","5",".",".","."},{".","9","8",".",".",".",".","6","."},{"8",".",".",".","6",".",".",".","3"},{"4",".",".","8",".","3",".",".","1"},{"7",".",".",".","2",".",".",".","6"},{".","6",".",".",".",".","2","8","."},{".",".",".","4","1","9",".",".","5"},{".",".",".",".","8",".",".","7","9"}};
+        Sudoku sudoku3 = new Sudoku(input3);
+        System.out.println(sudoku3.validSudoku());
+    }
+
+    public static void solveSudokuTests() {
+        String[][] input1 = {{"5","3",".",".","7",".",".",".","."},{"6",".",".","1","9","5",".",".","."},{".","9","8",".",".",".",".","6","."},{"8",".",".",".","6",".",".",".","3"},{"4",".",".","8",".","3",".",".","1"},{"7",".",".",".","2",".",".",".","6"},{".","6",".",".",".",".","2","8","."},{".",".",".","4","1","9",".",".","5"},{".",".",".",".","8",".",".","7","9"}};
+        Sudoku sudoku1 = new Sudoku(input1);
+        sudoku1.solveSudoku();
+    }
+
+    public static void quickSortTests() {
+        QuickSort quickSort = new QuickSort();
+        int[] nums = new int[10];
+        Random random = new Random();
+        System.out.println("Before - ");
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = random.nextInt(100);
+            System.out.print(nums[i] + ",");
+        }
+
+        System.out.println();
+        quickSort.quickSort(nums, 0, nums.length - 1);
+
+        System.out.println("After");
+        for (int i = 0; i < nums.length; i++) {
+            System.out.print(nums[i] + ",");
+        }
     }
 }

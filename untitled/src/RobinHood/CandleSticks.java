@@ -64,7 +64,7 @@ public class CandleSticks {
         List<int[]> aggregated = new ArrayList<>();
 
         for (int start = 0; start < lastBucket + 1; start ++) {
-            if (!intervalMap.containsKey(start) && aggregated.size() == 0) {
+            if (!intervalMap.containsKey(start) && aggregated.isEmpty()) {
                 continue;
             }
 
