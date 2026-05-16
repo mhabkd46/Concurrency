@@ -181,6 +181,7 @@ class DeleteCommand implements ReversibleCommand {
             database.valueFrequency.put(currentValue, Math.max(0, database.valueFrequency.getOrDefault(currentValue, 0) - 1));
         }
         database.cache.remove(this.key);
+        return true;
     }
 
     public boolean reverse() {
